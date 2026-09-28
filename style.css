@@ -130,7 +130,9 @@ button {
 .control-label,
 .system-footer,
 .input-wrap label,
-.input-mark {
+.input-mark,
+.section-label,
+.quick-button {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -173,8 +175,7 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 20px 0 16px;
+  padding: 18px 0 14px;
 }
 
 .console-heading {
@@ -214,7 +215,7 @@ h1 {
 textarea {
   display: block;
   width: 100%;
-  min-height: 118px;
+  min-height: 104px;
   max-height: 170px;
   resize: vertical;
   padding: 32px 16px 18px;
@@ -316,10 +317,85 @@ textarea:focus {
   letter-spacing: 0.18em;
 }
 
+.quick-response {
+  margin-top: 16px;
+}
+
+.section-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.section-label h2 {
+  margin: 0;
+  color: var(--blue-bright);
+  font-size: 0.69rem;
+  letter-spacing: 0.13em;
+}
+
+.section-label span {
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.quick-button {
+  position: relative;
+  min-height: 46px;
+  padding: 6px 5px;
+  overflow: hidden;
+  border: 1px solid rgba(35, 105, 158, 0.46);
+  border-radius: 2px;
+  color: #d8e7f5;
+  background: rgba(5, 17, 32, 0.9);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.quick-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(75, 182, 255, 0.28), transparent);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.quick-button:active {
+  transform: scale(0.97);
+}
+
+.quick-button:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+}
+
+.quick-button.is-triggered {
+  border-color: var(--blue-bright);
+  background: #0a2a49;
+  box-shadow: 0 0 16px rgba(22, 139, 255, 0.5), inset 0 0 10px rgba(75, 182, 255, 0.14);
+}
+
+.quick-button.is-triggered::after {
+  animation: quick-flash 220ms ease-out;
+}
+
 .controls {
   display: grid;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .control-row {
@@ -421,6 +497,11 @@ input[type="range"]::-moz-range-thumb {
   50% { opacity: 0.5; box-shadow: 0 0 4px var(--blue); }
 }
 
+@keyframes quick-flash {
+  0% { opacity: 0.9; transform: translateX(-100%); }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
 @media (min-width: 700px) {
   .terminal {
     min-height: calc(100svh - 48px);
@@ -438,11 +519,18 @@ input[type="range"]::-moz-range-thumb {
   .console-heading { margin-bottom: 10px; }
   .eyebrow { margin-bottom: 4px; }
   h1 { font-size: 1.55rem; }
-  textarea { min-height: 98px; padding-top: 29px; line-height: 1.45; }
+  textarea { min-height: 92px; padding-top: 29px; line-height: 1.45; }
   .action-button { min-height: 62px; }
+  .quick-response { margin-top: 12px; }
+  .quick-grid { gap: 5px; }
+  .quick-button { min-height: 43px; font-size: 0.68rem; }
   .controls { gap: 8px; margin-top: 10px; }
   .control-label { margin-bottom: 2px; }
   .system-footer { padding-top: 8px; }
+}
+
+@media (max-width: 350px) {
+  .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -8,6 +8,31 @@ const pitch = document.querySelector("#pitch");
 const speedValue = document.querySelector("#speedValue");
 const pitchValue = document.querySelector("#pitchValue");
 const message = document.querySelector("#message");
+const quickGrid = document.querySelector("#quickGrid");
+
+const quickResponses = [
+  "はい！了解！",
+  "ちょっと待って！",
+  "今行く！",
+  "大丈夫！",
+  "ダメ！",
+  "ありがとう！",
+  "ごめん！",
+  "それ、いいね！",
+  "お腹すいた！",
+  "何食べる？",
+  "コーヒーお願い！",
+  "眠い！",
+  "もう帰る！",
+  "行ってきます！",
+  "おかえり！",
+  "早くして！",
+  "今日はもう無理！",
+  "知らない！",
+  "聞いてない！",
+  "それは違う！",
+  "最高！"
+];
 
 const synth = window.speechSynthesis;
 let voices = [];
@@ -89,11 +114,37 @@ function stop() {
   setMessage("停止しました — 音声モジュール待機中");
 }
 
+function createQuickResponses() {
+  const fragment = document.createDocumentFragment();
+
+  quickResponses.forEach((text) => {
+    const button = document.createElement("button");
+    button.className = "quick-button";
+    button.type = "button";
+    button.textContent = text;
+    button.setAttribute("aria-label", `${text}をすぐ読み上げる`);
+
+    button.addEventListener("click", () => {
+      speechText.value = text;
+      button.classList.remove("is-triggered");
+      void button.offsetWidth;
+      button.classList.add("is-triggered");
+      window.setTimeout(() => button.classList.remove("is-triggered"), 240);
+      speak();
+    });
+
+    fragment.appendChild(button);
+  });
+
+  quickGrid.appendChild(fragment);
+}
+
 speed.addEventListener("input", () => updateRange(speed, speedValue, "x"));
 pitch.addEventListener("input", () => updateRange(pitch, pitchValue));
 speakButton.addEventListener("click", speak);
 stopButton.addEventListener("click", stop);
 
+createQuickResponses();
 updateRange(speed, speedValue, "x");
 updateRange(pitch, pitchValue);
 loadVoices();
